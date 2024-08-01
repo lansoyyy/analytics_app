@@ -1,9 +1,11 @@
 import 'package:analytics_app/screens/login_screen.dart';
+import 'package:analytics_app/services/add_user.dart';
 import 'package:analytics_app/utils/colors.dart';
 import 'package:analytics_app/widgets/button_widget.dart';
 import 'package:analytics_app/widgets/text_widget.dart';
 import 'package:analytics_app/widgets/textfield_widget.dart';
 import 'package:analytics_app/widgets/toast_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -118,16 +120,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ButtonWidget(
                   label: 'Register',
                   onPressed: () {
-                    box.write('name', name.text);
-
-                    box.write('email', email.text);
-                    box.write('password', password.text);
-
-                    showToast('Account created succesfully!');
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (context) => const LoginScreen()),
-                    );
+                    register(context);
                   },
                 ),
                 const SizedBox(height: 10),
@@ -158,5 +151,36 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       ),
     );
+  }
+
+  register(context) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email.text, password: password.text);
+
+      addUser(name.text, email.text, number.text);
+
+      // signup(nameController.text, numberController.text, addressController.text,
+      //     emailController.text);
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+      showToast("Registered Successfully!");
+
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        showToast('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        showToast('The account already exists for that email.');
+      } else if (e.code == 'invalid-email') {
+        showToast('The email address is not valid.');
+      } else {
+        showToast(e.toString());
+      }
+    } on Exception catch (e) {
+      showToast("An error occurred: $e");
+    }
   }
 }
