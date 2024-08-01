@@ -1,21 +1,22 @@
-import 'package:analytics_app/screens/home_screen.dart';
-import 'package:analytics_app/screens/signup_screen.dart';
+import 'package:analytics_app/screens/login_screen.dart';
 import 'package:analytics_app/utils/colors.dart';
 import 'package:analytics_app/widgets/button_widget.dart';
 import 'package:analytics_app/widgets/text_widget.dart';
 import 'package:analytics_app/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
+  final name = TextEditingController();
+  final number = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,27 +30,46 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 20,
+                  height: 25,
                 ),
-                // Logo Placeholder
-                const CircleAvatar(
-                  radius: 100,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage(
-                    'assets/images/logo.png',
-                  ), // Replace with your logo asset
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-
                 const Text(
-                  'Trend Analytics\nApplication',
+                  'Signup',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),
+                ),
+                const SizedBox(height: 10),
+                TextFieldWidget(
+                  hasValidator: false,
+                  hint: 'Enter fullname',
+                  borderColor: Colors.grey,
+                  label: 'Fullname',
+                  controller: name,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a email';
+                    }
+
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFieldWidget(
+                  inputType: TextInputType.number,
+                  hasValidator: false,
+                  hint: 'Enter contact number',
+                  borderColor: Colors.grey,
+                  label: 'Contact Number',
+                  controller: number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a email';
+                    }
+
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextFieldWidget(
@@ -67,32 +87,36 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                TextFieldWidget(
-                  hasValidator: false,
-                  hint: 'Enter password',
-                  showEye: true,
-                  borderColor: Colors.grey,
-                  label: 'Password',
-                  isObscure: true,
-                  controller: password,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a password';
-                    }
-                    if (value.length < 8) {
-                      return 'Password must be at least 8 characters long';
-                    }
+                Column(
+                  children: [
+                    TextFieldWidget(
+                      hasValidator: false,
+                      hint: 'Enter password',
+                      showEye: true,
+                      borderColor: Colors.grey,
+                      label: 'Password',
+                      isObscure: true,
+                      controller: password,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a password';
+                        }
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters long';
+                        }
 
-                    return null;
-                  },
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 30),
                 ButtonWidget(
-                  label: 'Login',
+                  label: 'Register',
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
+                          builder: (context) => const LoginScreen()),
                     );
                   },
                 ),
@@ -101,18 +125,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextWidget(
-                      text: "Doesn't have an account?",
+                      text: "Already have an account?",
                       fontSize: 12,
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SignupScreen()));
+                        Navigator.pop(context);
                       },
                       child: TextWidget(
                         color: primary,
                         fontFamily: 'Bold',
-                        text: "Signup",
+                        text: "Login",
                         fontSize: 12,
                       ),
                     )
