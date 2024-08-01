@@ -39,6 +39,9 @@ dependencies:
   intl:
   image_picker:
   get_storage:
+  dio:
+  http:
+  syncfusion_flutter_charts:
 
 dev_dependencies:
   flutter_test:

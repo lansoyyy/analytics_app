@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:analytics_app/screens/home_screen.dart';
 import 'package:analytics_app/screens/signup_screen.dart';
 import 'package:analytics_app/utils/colors.dart';
+import 'package:analytics_app/utils/const.dart';
 import 'package:analytics_app/widgets/button_widget.dart';
 import 'package:analytics_app/widgets/text_widget.dart';
 import 'package:analytics_app/widgets/textfield_widget.dart';
 import 'package:analytics_app/widgets/toast_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -93,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 30),
                 ButtonWidget(
                   label: 'Login',
-                  onPressed: () {
+                  onPressed: () async {
                     if (email.text == box.read('email') &&
                         password.text == box.read('password')) {
                       Navigator.of(context).pushReplacement(
