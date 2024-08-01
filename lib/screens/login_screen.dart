@@ -4,7 +4,9 @@ import 'package:analytics_app/utils/colors.dart';
 import 'package:analytics_app/widgets/button_widget.dart';
 import 'package:analytics_app/widgets/text_widget.dart';
 import 'package:analytics_app/widgets/textfield_widget.dart';
+import 'package:analytics_app/widgets/toast_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +18,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
+
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -90,10 +94,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ButtonWidget(
                   label: 'Login',
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
-                    );
+                    if (email.text == box.read('email') &&
+                        password.text == box.read('password')) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()),
+                      );
+                    } else {
+                      showToast('Invalid account!');
+                    }
                   },
                 ),
                 const SizedBox(height: 10),

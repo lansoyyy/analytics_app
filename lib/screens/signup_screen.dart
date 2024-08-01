@@ -3,7 +3,9 @@ import 'package:analytics_app/utils/colors.dart';
 import 'package:analytics_app/widgets/button_widget.dart';
 import 'package:analytics_app/widgets/text_widget.dart';
 import 'package:analytics_app/widgets/textfield_widget.dart';
+import 'package:analytics_app/widgets/toast_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -17,6 +19,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final password = TextEditingController();
   final name = TextEditingController();
   final number = TextEditingController();
+
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +118,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 ButtonWidget(
                   label: 'Register',
                   onPressed: () {
+                    box.write('name', name.text);
+
+                    box.write('email', email.text);
+                    box.write('password', password.text);
+
+                    showToast('Account created succesfully!');
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                           builder: (context) => const LoginScreen()),
