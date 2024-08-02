@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:analytics_app/models/sales_model.dart';
 import 'package:analytics_app/models/trend_model.dart';
+import 'package:analytics_app/screens/chat_page.dart';
 import 'package:analytics_app/screens/login_screen.dart';
+import 'package:analytics_app/screens/messages_page.dart';
 import 'package:analytics_app/utils/colors.dart';
 import 'package:analytics_app/utils/const.dart';
 import 'package:analytics_app/widgets/logout_widget.dart';
@@ -96,6 +98,16 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.white,
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => ChatPage()));
+            },
+            icon: const Icon(
+              Icons.message,
+              color: Colors.white,
+            ),
+          ),
           IconButton(
             onPressed: () {
               logout(context, const LoginScreen());
